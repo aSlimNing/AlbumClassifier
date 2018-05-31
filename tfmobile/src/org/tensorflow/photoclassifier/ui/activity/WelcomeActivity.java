@@ -84,7 +84,7 @@ public class WelcomeActivity extends AppCompatActivity {
             switch (msg.what) {
                 // scanning images
                 case MSG_SCAN_IMAGE_BEGIN:
-                    Log.d("MESSAGE", "0x1111");
+                    Log.d("MESSAGE", "MSG_SCAN_IMAGE_BEGIN");
                     if (vWorkProcess != null)
                         vWorkProcess.setText("\n正在扫描图片 ");
                     break;
@@ -200,22 +200,9 @@ public class WelcomeActivity extends AppCompatActivity {
             public void run() {
                 Looper.prepare();
                 mWelcomeLogic.collectImagesAndHandle();
-                collectImagesAndHandle(WelcomeActivity.this);
                 Looper.loop();
             }
         }).start();
-
-    }
-
-    /**
-     * when open application, this function will scan images in device and check them with the db
-     * of this application to confirm whether the image has been classified by tf or whether the
-     * images had been delete in other places, and do something to keep application running with
-     * no error
-     *
-     * @param ctx
-     */
-    private void collectImagesAndHandle(Context ctx) {
     }
 
     /**
