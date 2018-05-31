@@ -1,0 +1,64 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/netease/Desktop/tensorflow-for-poets-2-master/android/tfmobile/gradleBuild/intermediates/incremental/mergeDebugResources/merged.dir/values-v11/values-v11.xml",
+            "map": [
+                {
+                    "source": "/Users/netease/Desktop/tensorflow-for-poets-2-master/android/tfmobile/res/values-v11/styles.xml",
+                    "from": {
+                        "startLines": "7,19,11",
+                        "startColumns": "2,2,2",
+                        "startOffsets": "210,763,340",
+                        "endLines": "9,21,17",
+                        "endColumns": "10,10,10",
+                        "endOffsets": "336,927,759"
+                    },
+                    "to": {
+                        "startLines": "2,63,66",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,4515,4684",
+                        "endLines": "4,65,72",
+                        "endColumns": "10,10,10",
+                        "endOffsets": "181,4679,5103"
+                    }
+                },
+                {
+                    "source": "/Users/netease/.gradle/caches/transforms-1/files-1.1/appcompat-v7-25.0.1.aar/359c0cfde2fa7f94e95160f0a1cacdb4/res/values-v11/values-v11.xml",
+                    "from": {
+                        "startLines": "2,8,14,20,26,32,38,39,40,41,46,51,56,58,60,61,62,115,169",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,474,899,1327,1753,2180,2605,2694,2795,2898,3306,3726,4148,4255,4384,4455,4538,8477,12559",
+                        "endLines": "7,13,19,25,31,37,38,39,40,45,50,55,57,59,60,61,114,168,169",
+                        "endColumns": "12,12,12,12,12,12,88,100,102,12,12,12,12,12,70,82,12,12,90",
+                        "endOffsets": "469,894,1322,1748,2175,2600,2689,2790,2893,3301,3721,4143,4250,4379,4450,4533,8472,12554,12645"
+                    },
+                    "to": {
+                        "startLines": "5,11,17,23,29,35,41,42,43,44,49,54,59,61,73,74,75,128,182",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "186,605,1030,1458,1884,2311,2736,2825,2926,3029,3437,3857,4279,4386,5108,5179,5262,9201,13283",
+                        "endLines": "10,16,22,28,34,40,41,42,43,48,53,58,60,62,73,74,127,181,182",
+                        "endColumns": "12,12,12,12,12,12,88,100,102,12,12,12,12,12,70,82,12,12,90",
+                        "endOffsets": "600,1025,1453,1879,2306,2731,2820,2921,3024,3432,3852,4274,4381,4510,5174,5257,9196,13278,13369"
+                    }
+                },
+                {
+                    "source": "/Users/netease/Desktop/tensorflow-for-poets-2-master/android/tfmobile/res/values-v11/template-styles.xml",
+                    "from": {
+                        "startLines": "19",
+                        "startColumns": "4",
+                        "startOffsets": "663",
+                        "endColumns": "65",
+                        "endOffsets": "724"
+                    },
+                    "to": {
+                        "startLines": "183",
+                        "startColumns": "4",
+                        "startOffsets": "13374",
+                        "endColumns": "64",
+                        "endOffsets": "13434"
+                    }
+                }
+            ]
+        }
+    ]
+}

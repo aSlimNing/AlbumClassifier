@@ -1,0 +1,60 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/netease/Desktop/tensorflow-for-poets-2-master/android/tfmobile/gradleBuild/intermediates/incremental/mergeDebugResources/merged.dir/values-my/values-my.xml",
+            "map": [
+                {
+                    "source": "/Users/netease/.gradle/caches/transforms-1/files-1.1/play-services-base-10.0.1.aar/9003702d2506f8e80cdb2bb417016459/res/values-my/values.xml",
+                    "from": {
+                        "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
+                        "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+                        "startOffsets": "283,388,584,716,825,1031,1161,1296,1531,1635,1836,1977,2194,2407,2503,2602",
+                        "endColumns": "104,195,131,108,205,129,134,234,103,200,140,216,212,95,98,113",
+                        "endOffsets": "387,583,715,824,1030,1160,1295,1530,1634,1835,1976,2193,2406,2502,2601,2715"
+                    },
+                    "to": {
+                        "startLines": "3,4,5,6,7,8,9,11,12,13,14,15,16,17,18,19",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "179,288,484,620,733,939,1073,1425,1660,1768,1969,2114,2331,2548,2648,2751",
+                        "endColumns": "108,195,135,112,205,133,138,234,107,200,144,216,216,99,102,117",
+                        "endOffsets": "283,479,615,728,934,1068,1207,1655,1763,1964,2109,2326,2543,2643,2746,2864"
+                    }
+                },
+                {
+                    "source": "/Users/netease/.gradle/caches/transforms-1/files-1.1/play-services-basement-10.0.1.aar/642bbf93787fb5e878dd1a2d7c20a55d/res/values-my/values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "285",
+                        "endColumns": "212",
+                        "endOffsets": "497"
+                    },
+                    "to": {
+                        "startLines": "10",
+                        "startColumns": "4",
+                        "startOffsets": "1212",
+                        "endColumns": "212",
+                        "endOffsets": "1420"
+                    }
+                },
+                {
+                    "source": "/Users/netease/.gradle/caches/transforms-1/files-1.1/play-services-ads-10.0.1.aar/d70a5892f6233513bba9f9acd2e2aa56/res/values-my/values.xml",
+                    "from": {
+                        "startLines": "4,5,6,7,8,9,10,11,12,13",
+                        "startColumns": "0,0,0,0,0,0,0,0,0,0",
+                        "startOffsets": "237,307,448,562,664,788,900,1006,1080,1213",
+                        "endColumns": "69,140,113,101,123,111,105,73,132,92",
+                        "endOffsets": "306,447,561,663,787,899,1005,1079,1212,1305"
+                    },
+                    "to": {
+                        "startLines": "2,20,21,22,23,24,25,26,27,28",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,2869,3014,3132,3238,3366,3482,3592,3670,3807",
+                        "endColumns": "73,144,117,105,127,115,109,77,136,96",
+                        "endOffsets": "174,3009,3127,3233,3361,3477,3587,3665,3802,3899"
+                    }
+                }
+            ]
+        }
+    ]
+}
