@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/netease/Desktop/tensorflow-for-poets-2-master/android/tfmobile/gradleBuild/intermediates/incremental/mergeDebugResources/merged.dir/values-km/values-km.xml",
+            "outputFile": "/Users/netease/AlbumClassifer/AlbumClassifier/tfmobile/gradleBuild/intermediates/incremental/mergeDebugResources/merged.dir/values-km/values-km.xml",
             "map": [
                 {
                     "source": "/Users/netease/.gradle/caches/transforms-1/files-1.1/play-services-ads-10.0.1.aar/d70a5892f6233513bba9f9acd2e2aa56/res/values-km/values.xml",

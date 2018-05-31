@@ -1,20 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/netease/Desktop/tensorflow-for-poets-2-master/android/tfmobile/gradleBuild/intermediates/incremental/mergeDebugResources/merged.dir/values-sw600dp-v13/values-sw600dp-v13.xml",
+            "outputFile": "/Users/netease/AlbumClassifer/AlbumClassifier/tfmobile/gradleBuild/intermediates/incremental/mergeDebugResources/merged.dir/values-sw600dp-v13/values-sw600dp-v13.xml",
             "map": [
                 {
-                    "source": "/Users/netease/.gradle/caches/transforms-1/files-1.1/appcompat-v7-25.0.1.aar/359c0cfde2fa7f94e95160f0a1cacdb4/res/values-sw600dp-v13/values-sw600dp-v13.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,124,193,263,337,413,472,543",
-                        "endColumns": "68,68,69,73,75,58,70,67",
-                        "endOffsets": "119,188,258,332,408,467,538,606"
-                    }
-                },
-                {
-                    "source": "/Users/netease/Desktop/tensorflow-for-poets-2-master/android/tfmobile/res/values-sw600dp/template-styles.xml",
+                    "source": "/Users/netease/AlbumClassifer/AlbumClassifier/tfmobile/res/values-sw600dp/template-styles.xml",
                     "from": {
                         "startLines": "18",
                         "startColumns": "4",
@@ -33,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "/Users/netease/Desktop/tensorflow-for-poets-2-master/android/tfmobile/res/values-sw600dp/template-dimens.xml",
+                    "source": "/Users/netease/AlbumClassifer/AlbumClassifier/tfmobile/res/values-sw600dp/template-dimens.xml",
                     "from": {
                         "startLines": "20,21",
                         "startColumns": "4,4",
@@ -47,6 +37,16 @@
                         "startOffsets": "611,679",
                         "endColumns": "67,67",
                         "endOffsets": "674,742"
+                    }
+                },
+                {
+                    "source": "/Users/netease/.gradle/caches/transforms-1/files-1.1/appcompat-v7-25.0.1.aar/359c0cfde2fa7f94e95160f0a1cacdb4/res/values-sw600dp-v13/values-sw600dp-v13.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,124,193,263,337,413,472,543",
+                        "endColumns": "68,68,69,73,75,58,70,67",
+                        "endOffsets": "119,188,258,332,408,467,538,606"
                     }
                 }
             ]

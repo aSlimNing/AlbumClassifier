@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/netease/Desktop/tensorflow-for-poets-2-master/android/tfmobile/gradleBuild/intermediates/incremental/mergeDebugResources/merged.dir/values-ta/values-ta.xml",
+            "outputFile": "/Users/netease/AlbumClassifer/AlbumClassifier/tfmobile/gradleBuild/intermediates/incremental/mergeDebugResources/merged.dir/values-ta/values-ta.xml",
             "map": [
                 {
                     "source": "/Users/netease/.gradle/caches/transforms-1/files-1.1/play-services-basement-10.0.1.aar/642bbf93787fb5e878dd1a2d7c20a55d/res/values-ta/values.xml",

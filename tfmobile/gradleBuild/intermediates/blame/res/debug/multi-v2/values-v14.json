@@ -1,27 +1,8 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/netease/Desktop/tensorflow-for-poets-2-master/android/tfmobile/gradleBuild/intermediates/incremental/mergeDebugResources/merged.dir/values-v14/values-v14.xml",
+            "outputFile": "/Users/netease/AlbumClassifer/AlbumClassifier/tfmobile/gradleBuild/intermediates/incremental/mergeDebugResources/merged.dir/values-v14/values-v14.xml",
             "map": [
-                {
-                    "source": "/Users/netease/Desktop/tensorflow-for-poets-2-master/android/tfmobile/res/values-v14/styles.xml",
-                    "from": {
-                        "startLines": "7",
-                        "startColumns": "2",
-                        "startOffsets": "214",
-                        "endLines": "9",
-                        "endColumns": "10",
-                        "endOffsets": "354"
-                    },
-                    "to": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endLines": "4",
-                        "endColumns": "10",
-                        "endOffsets": "195"
-                    }
-                },
                 {
                     "source": "/Users/netease/.gradle/caches/transforms-1/files-1.1/appcompat-v7-25.0.1.aar/359c0cfde2fa7f94e95160f0a1cacdb4/res/values-v14/values-v14.xml",
                     "from": {
@@ -39,6 +20,25 @@
                         "endLines": "9,10,11,17,23,24,25,26,27,30,31,32",
                         "endColumns": "12,70,82,12,12,119,131,119,62,12,62,131",
                         "endOffsets": "471,542,625,1035,1457,1577,1709,1829,1892,2046,2109,2241"
+                    }
+                },
+                {
+                    "source": "/Users/netease/AlbumClassifer/AlbumClassifier/tfmobile/res/values-v14/styles.xml",
+                    "from": {
+                        "startLines": "7",
+                        "startColumns": "2",
+                        "startOffsets": "214",
+                        "endLines": "9",
+                        "endColumns": "10",
+                        "endOffsets": "354"
+                    },
+                    "to": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "4",
+                        "endColumns": "10",
+                        "endOffsets": "195"
                     }
                 }
             ]

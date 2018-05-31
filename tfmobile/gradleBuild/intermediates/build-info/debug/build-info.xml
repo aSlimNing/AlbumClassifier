@@ -6,8 +6,8 @@
     density="560dpi"
     format="10"
     plugin-version="3.0.0"
-    timestamp="1527734427862"
-    token="1247376266231804674"
+    timestamp="1527750776568"
+    token="-7832177977443873092"
     verifier="COLD_SWAP_REQUESTED" >
 
     <task
@@ -23,50 +23,67 @@
         name="verifier"
         duration="0" />
 
+    <artifact
+        location="/Users/netease/AlbumClassifer/AlbumClassifier/tfmobile/gradleBuild/outputs/apk/debug/tfmobile-debug.apk"
+        type="SPLIT_MAIN" />
+
     <build
         build-mode="FULL"
-        timestamp="1527734200295"
+        timestamp="1527750489385"
         verifier="FULL_BUILD_REQUESTED" >
         <artifact
-            location="/Users/netease/Desktop/tensorflow-for-poets-2-master/android/tfmobile/gradleBuild/intermediates/split-apk/debug/dep/dependencies.apk"
+            location="/Users/netease/AlbumClassifer/AlbumClassifier/tfmobile/gradleBuild/intermediates/split-apk/debug/dep/dependencies.apk"
             type="SPLIT" />
         <artifact
-            location="/Users/netease/Desktop/tensorflow-for-poets-2-master/android/tfmobile/gradleBuild/intermediates/split-apk/debug/slices/slice_0.apk"
+            location="/Users/netease/AlbumClassifer/AlbumClassifier/tfmobile/gradleBuild/intermediates/split-apk/debug/slices/slice_0.apk"
             type="SPLIT" />
         <artifact
-            location="/Users/netease/Desktop/tensorflow-for-poets-2-master/android/tfmobile/gradleBuild/intermediates/split-apk/debug/slices/slice_1.apk"
+            location="/Users/netease/AlbumClassifer/AlbumClassifier/tfmobile/gradleBuild/intermediates/split-apk/debug/slices/slice_2.apk"
             type="SPLIT" />
         <artifact
-            location="/Users/netease/Desktop/tensorflow-for-poets-2-master/android/tfmobile/gradleBuild/intermediates/split-apk/debug/slices/slice_2.apk"
+            location="/Users/netease/AlbumClassifer/AlbumClassifier/tfmobile/gradleBuild/intermediates/split-apk/debug/slices/slice_1.apk"
             type="SPLIT" />
         <artifact
-            location="/Users/netease/Desktop/tensorflow-for-poets-2-master/android/tfmobile/gradleBuild/intermediates/split-apk/debug/slices/slice_3.apk"
+            location="/Users/netease/AlbumClassifer/AlbumClassifier/tfmobile/gradleBuild/intermediates/split-apk/debug/slices/slice_3.apk"
             type="SPLIT" />
         <artifact
-            location="/Users/netease/Desktop/tensorflow-for-poets-2-master/android/tfmobile/gradleBuild/intermediates/split-apk/debug/slices/slice_5.apk"
+            location="/Users/netease/AlbumClassifer/AlbumClassifier/tfmobile/gradleBuild/intermediates/split-apk/debug/slices/slice_4.apk"
             type="SPLIT" />
         <artifact
-            location="/Users/netease/Desktop/tensorflow-for-poets-2-master/android/tfmobile/gradleBuild/intermediates/split-apk/debug/slices/slice_6.apk"
+            location="/Users/netease/AlbumClassifer/AlbumClassifier/tfmobile/gradleBuild/intermediates/split-apk/debug/slices/slice_5.apk"
             type="SPLIT" />
         <artifact
-            location="/Users/netease/Desktop/tensorflow-for-poets-2-master/android/tfmobile/gradleBuild/intermediates/split-apk/debug/slices/slice_4.apk"
+            location="/Users/netease/AlbumClassifer/AlbumClassifier/tfmobile/gradleBuild/intermediates/split-apk/debug/slices/slice_6.apk"
             type="SPLIT" />
         <artifact
-            location="/Users/netease/Desktop/tensorflow-for-poets-2-master/android/tfmobile/gradleBuild/intermediates/split-apk/debug/slices/slice_7.apk"
+            location="/Users/netease/AlbumClassifer/AlbumClassifier/tfmobile/gradleBuild/intermediates/split-apk/debug/slices/slice_7.apk"
             type="SPLIT" />
         <artifact
-            location="/Users/netease/Desktop/tensorflow-for-poets-2-master/android/tfmobile/gradleBuild/intermediates/split-apk/debug/slices/slice_8.apk"
+            location="/Users/netease/AlbumClassifer/AlbumClassifier/tfmobile/gradleBuild/intermediates/split-apk/debug/slices/slice_8.apk"
             type="SPLIT" />
         <artifact
-            location="/Users/netease/Desktop/tensorflow-for-poets-2-master/android/tfmobile/gradleBuild/intermediates/split-apk/debug/slices/slice_9.apk"
+            location="/Users/netease/AlbumClassifer/AlbumClassifier/tfmobile/gradleBuild/intermediates/split-apk/debug/slices/slice_9.apk"
             type="SPLIT" />
         <artifact
-            location="/Users/netease/Desktop/tensorflow-for-poets-2-master/android/tfmobile/gradleBuild/outputs/apk/debug/tfmobile-debug.apk"
+            location="/Users/netease/AlbumClassifer/AlbumClassifier/tfmobile/gradleBuild/outputs/apk/debug/tfmobile-debug.apk"
             type="SPLIT_MAIN" />
     </build>
     <build
         build-mode="COLD"
-        timestamp="1527734427862"
-        verifier="COLD_SWAP_REQUESTED" />
+        ir-eligibility="COMPATIBLE"
+        timestamp="1527750701514"
+        verifier="COLD_SWAP_REQUESTED" >
+        <artifact
+            location="/Users/netease/AlbumClassifer/AlbumClassifier/tfmobile/gradleBuild/intermediates/split-apk/debug/slices/slice_8.apk"
+            type="SPLIT" />
+    </build>
+    <build
+        build-mode="COLD"
+        timestamp="1527750776568"
+        verifier="COLD_SWAP_REQUESTED" >
+        <artifact
+            location="/Users/netease/AlbumClassifer/AlbumClassifier/tfmobile/gradleBuild/outputs/apk/debug/tfmobile-debug.apk"
+            type="SPLIT_MAIN" />
+    </build>
 
 </instant-run>
