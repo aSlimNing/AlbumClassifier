@@ -1,6 +1,9 @@
 edu-android-models.iml
-*/build
-*/.idea
-*/.gradle
-*/.gradleBuild
-tfmobile.iml
+tfmobile/build
+tfmobile/.idea
+tfmobile/.gradle
+tfmobile/.gradleBuild
+tfmobile/tfmobile.iml
+tfmobile/gradlew
+Tfmobile/gradlew.bat
+tfmobile/.idea/workspace.xml
