@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ImagesProvider {
+
+
     public interface Callback {
         void onScanImagesInDeviceSucceed(List<String> imagesHasBeenClassifier, List<String> imagesNotClassifier);
     }
@@ -75,6 +77,9 @@ public class ImagesProvider {
                 // not be deleted, do nothing
             }
         }
+    }
+
+    public void insertImageIntoDb() {
     }
 
     public void release() {

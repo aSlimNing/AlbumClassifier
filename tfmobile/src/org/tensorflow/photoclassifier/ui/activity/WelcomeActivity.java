@@ -63,10 +63,9 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private WelcomeLogic mWelcomeLogic;
 
-    private ContentValues value;
     private DataBaseOperator mOperator;
 
-    private Classifier classifier;
+
 
 
     private int i = 0;
