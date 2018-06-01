@@ -1,7 +1,7 @@
 tfmobile/build
 tfmobile/.idea/
 tfmobile/.gradle/
-tfmobile/.gradleBuild/
+tfmobile/gradleBuild/
 tfmobile/tfmobile.iml
 tfmobile/gradlew
 tfmobile/gradlew.bat
