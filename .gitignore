@@ -1,0 +1,6 @@
+edu-android-models.iml
+*/build
+*/.idea
+*/.gradle
+*/.gradleBuild
+tfmobile.iml
