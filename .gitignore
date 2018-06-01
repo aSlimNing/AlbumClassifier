@@ -5,5 +5,5 @@ tfmobile/.gradle
 tfmobile/.gradleBuild
 tfmobile/tfmobile.iml
 tfmobile/gradlew
-Tfmobile/gradlew.bat
+tfmobile/gradlew.bat
 tfmobile/.idea/workspace.xml
