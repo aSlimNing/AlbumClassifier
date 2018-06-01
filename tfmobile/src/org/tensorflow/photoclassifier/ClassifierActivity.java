@@ -35,9 +35,9 @@ import java.util.Vector;
 
 import org.tensorflow.demo.R;
 import org.tensorflow.photoclassifier.OverlayView.DrawCallback;
-import org.tensorflow.photoclassifier.env.BorderedText;
-import org.tensorflow.photoclassifier.env.ImageUtils;
-import org.tensorflow.photoclassifier.env.Logger;
+import org.tensorflow.photoclassifier.utils.BorderedText;
+import org.tensorflow.photoclassifier.utils.ImageUtils;
+import org.tensorflow.photoclassifier.utils.Logger;
 
 import static org.tensorflow.photoclassifier.config.ClassifierConfig.IMAGE_MEAN;
 import static org.tensorflow.photoclassifier.config.ClassifierConfig.IMAGE_STD;

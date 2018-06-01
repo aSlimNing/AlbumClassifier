@@ -62,7 +62,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 import org.tensorflow.demo.R;
-import org.tensorflow.photoclassifier.env.Logger;
+import org.tensorflow.photoclassifier.utils.Logger;
 
 
 public class CameraConnectionFragment extends Fragment {

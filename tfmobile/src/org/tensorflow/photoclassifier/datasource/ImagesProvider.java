@@ -1,8 +1,10 @@
 package org.tensorflow.photoclassifier.datasource;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
 
+import org.tensorflow.photoclassifier.Classifier;
 import org.tensorflow.photoclassifier.config.ClassifierConfig;
 import org.tensorflow.photoclassifier.dao.DataBaseOperator;
 import org.tensorflow.photoclassifier.dao.SystemDataBaseOperator;
@@ -31,7 +33,7 @@ public class ImagesProvider {
         List<Map> imagesInDevice = SystemDataBaseOperator.getExternalImageInfo(mContext);
         String url;
         List<String> notBeClassifiedImages = new ArrayList<>();
-        List<String> stillInDeviceImages = new ArrayList<>();
+        List<String> hasBeenClassifiedImages = new ArrayList<>();
         for (Map imageInfo : imagesInDevice) {
             url = (String) imageInfo.get("_data");
             // test whether had been classified
@@ -42,14 +44,14 @@ public class ImagesProvider {
                 Log.d("TFInformation", "no");
             } else {
                 // had been classified
-                stillInDeviceImages.add(url);
+                hasBeenClassifiedImages.add(url);
                 Log.d("TFInformation", "yes");
             }
         }
-        callback.onScanImagesInDeviceSucceed(notBeClassifiedImages, stillInDeviceImages);
+        callback.onScanImagesInDeviceSucceed(hasBeenClassifiedImages,notBeClassifiedImages);
     }
 
-    public void scanImagesInDb(){
+    public void scanImagesInDb() {
         // for every image in db
         List<Map> imagesInDB = mOperator.search("AlbumPhotos");
         for (Map imageInfo : imagesInDB) {
@@ -79,7 +81,34 @@ public class ImagesProvider {
         }
     }
 
-    public void insertImageIntoDb() {
+    public void insertImageIntoDB(String image, List<Classifier.Recognition> results, ContentValues value) {
+        if (results == null) return;
+        List<Map> findResult;
+        if (mOperator == null) {
+            mOperator = new DataBaseOperator(mContext, ClassifierConfig.DB_NAME, ClassifierConfig.dbversion);
+        }
+        for (Classifier.Recognition cr : results) {
+            String type = cr.getTitle();
+            // AlbumPhotos
+            value.clear();
+            value.put("album_name", type);
+            value.put("url", image);
+            mOperator.insert("AlbumPhotos", value);
+            // Album
+            findResult = mOperator.search("Album", "album_name = '" + type + "'");
+            if (findResult.size() == 0) {
+                value.clear();
+                value.put("album_name", type);
+                value.put("show_image", image);
+                mOperator.insert("Album", value);
+            }
+            //TFInfromation
+            value.clear();
+            value.put("url", image);
+            value.put("tf_type", type);
+            value.put("confidence", cr.getConfidence());
+            mOperator.insert("TFInformation", value);
+        }
     }
 
     public void release() {

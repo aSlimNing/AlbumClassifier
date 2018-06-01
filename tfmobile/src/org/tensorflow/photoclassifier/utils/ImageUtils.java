@@ -13,19 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tensorflow.photoclassifier.env;
+package org.tensorflow.photoclassifier.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.media.Image;
+import android.os.Build;
 import android.os.Environment;
+import android.support.annotation.RequiresApi;
+import android.util.Log;
 
 import junit.framework.Assert;
+
+import org.tensorflow.photoclassifier.Classifier;
+import org.tensorflow.photoclassifier.config.ClassifierConfig;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
+import java.util.List;
+
+import static org.tensorflow.photoclassifier.config.ClassifierConfig.INPUT_SIZE;
 
 /**
  * Utility class for manipulating images.
@@ -236,4 +245,38 @@ public class ImageUtils {
 
         return matrix;
     }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
+    public static List<Classifier.Recognition>
+    do_tensorflow(Bitmap bitmap, Classifier classifier) {
+        // resize image
+        Bitmap newbm = ImageUtils.dealImageForTF(bitmap);
+        // get results
+        try {
+            return classifier.recognizeImage(newbm);
+        } catch (Exception e) {
+            Log.e("TF-ERROR", "1");
+            return null;
+        }
+    }
+
+    public static Bitmap dealImageForTF(Bitmap bitmap){
+        //TODO 需要重新resize图片这里有些问题
+        Bitmap croppedBitmap = Bitmap.createBitmap(INPUT_SIZE, INPUT_SIZE, Bitmap.Config.ARGB_8888);
+        try {
+            // resize
+            int width = bitmap.getWidth();
+            int height = bitmap.getHeight();
+            float scaleWidth = ((float) ClassifierConfig.INPUT_SIZE) / width;
+            float scaleHeight = ((float) ClassifierConfig.INPUT_SIZE) / height;
+            Matrix matrix = new Matrix();
+            matrix.postScale(scaleWidth, scaleHeight);
+            Bitmap newbm = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+            return newbm;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }

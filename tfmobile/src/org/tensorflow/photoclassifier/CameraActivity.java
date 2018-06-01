@@ -33,7 +33,7 @@ import android.widget.Toast;
 import java.nio.ByteBuffer;
 
 import org.tensorflow.demo.R;
-import org.tensorflow.photoclassifier.env.Logger;
+import org.tensorflow.photoclassifier.utils.Logger;
 
 public abstract class CameraActivity extends Activity implements OnImageAvailableListener {
   private static final Logger LOGGER = new Logger();

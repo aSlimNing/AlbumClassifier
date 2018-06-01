@@ -3,11 +3,9 @@ package org.tensorflow.photoclassifier.ui.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,9 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.tensorflow.demo.R;
-import org.tensorflow.photoclassifier.Classifier;
 import org.tensorflow.photoclassifier.dao.DataBaseOperator;
-import org.tensorflow.photoclassifier.TensorFlowImageClassifier;
 import org.tensorflow.photoclassifier.config.ClassifierConfig;
 import org.tensorflow.photoclassifier.logic.WelcomeLogic;
 
@@ -40,13 +36,6 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static org.tensorflow.photoclassifier.config.ClassifierConfig.IMAGE_MEAN;
-import static org.tensorflow.photoclassifier.config.ClassifierConfig.IMAGE_STD;
-import static org.tensorflow.photoclassifier.config.ClassifierConfig.INPUT_NAME;
-import static org.tensorflow.photoclassifier.config.ClassifierConfig.INPUT_SIZE;
-import static org.tensorflow.photoclassifier.config.ClassifierConfig.LABEL_FILE;
-import static org.tensorflow.photoclassifier.config.ClassifierConfig.MODEL_FILE;
-import static org.tensorflow.photoclassifier.config.ClassifierConfig.OUTPUT_NAME;
 import static org.tensorflow.photoclassifier.logic.WelcomeLogic.MSG_CLASSIF_IMAGE_VIA_TF;
 import static org.tensorflow.photoclassifier.logic.WelcomeLogic.MSG_PREPARE_WORK_FINISH;
 import static org.tensorflow.photoclassifier.logic.WelcomeLogic.MSG_RREPARE_TENSORFLOW;
@@ -60,13 +49,13 @@ import static org.tensorflow.photoclassifier.logic.WelcomeLogic.MSG_SCAN_IMAGE_F
 public class WelcomeActivity extends AppCompatActivity {
     // for permission
     private static final int PERMISSION_REQUEST_STORAGE = 200;
+    public static final int AFTER_ALL_CLASSIFIER = 0;
+    public static final int AFTER_SCAN_AND_CLEAR_DB = 1;
+    public static final int DEPEND_ON_THE_NUMBER = 2;
 
     private WelcomeLogic mWelcomeLogic;
 
     private DataBaseOperator mOperator;
-
-
-
 
     private int i = 0;
     private int size = 0;
@@ -209,6 +198,7 @@ public class WelcomeActivity extends AppCompatActivity {
      */
     private void do_afterScanImage() {
         Log.d("MESSAGE", "0x1");
+        //todo 将这个存在数据库当中的setting，改为存在sp文件当中，并在application当中初始化
         final DataBaseOperator operator = new DataBaseOperator(WelcomeActivity.this, ClassifierConfig.DB_NAME, ClassifierConfig.dbversion);
         List<Map> findResult = operator.search("Settings");
 
@@ -253,19 +243,19 @@ public class WelcomeActivity extends AppCompatActivity {
      * @param level 1, 2 or 3
      */
     private void do_byLevel(int level) {
-        if (level == 0) {
-            classifyNewImages();
-        } else if (level == 1) {
+        List<String> notBeClassifiedImages = mWelcomeLogic.getNotBeClassifiedImages();
+        if (level == AFTER_ALL_CLASSIFIER) {
+            mWelcomeLogic.classifyNewImages();
+        } else if (level == AFTER_SCAN_AND_CLEAR_DB) {
             ClassifierConfig.needToBeClassified = notBeClassifiedImages;
-            mHandler.sendEmptyMessage(0x24);
-        } else if (level == 2) {
+            do_finishThisActivity();
+        } else if (level == DEPEND_ON_THE_NUMBER) {
             if (notBeClassifiedImages.size() <= ClassifierConfig.imageNumber) {
-                classifyNewImages();
+                mWelcomeLogic.classifyNewImages();
             } else {
                 ClassifierConfig.needToBeClassified = new ArrayList<>();
                 ClassifierConfig.needToBeClassified.addAll(notBeClassifiedImages.subList(ClassifierConfig.imageNumber, notBeClassifiedImages.size()));
-                notBeClassifiedImages = notBeClassifiedImages.subList(0, ClassifierConfig.imageNumber);
-                classifyNewImages();
+                mWelcomeLogic.classifyNewImages();
             }
         }
     }
@@ -298,42 +288,43 @@ public class WelcomeActivity extends AppCompatActivity {
 
     /**
      * for every image will be classified, this function will classify them
+     * 已经挪到logic当中，找个合适的时间删了
      */
-    private void classifyNewImages() {
-        new Thread(new Runnable() {
-            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-            @Override
-            public void run() {
-                Looper.prepare();
-                // init tensorflow
-                if (classifier == null) {
-                    // get permission
-                    classifier =
-                            TensorFlowImageClassifier.create(
-                                    getAssets(),
-                                    MODEL_FILE,
-                                    LABEL_FILE,
-                                    INPUT_SIZE,
-                                    IMAGE_MEAN,
-                                    IMAGE_STD,
-                                    INPUT_NAME,
-                                    OUTPUT_NAME);
-
-                }
-                Bitmap bitmap;
-                value = new ContentValues();
-                mOperator = new DataBaseOperator(WelcomeActivity.this, ClassifierConfig.DB_NAME, ClassifierConfig.dbversion);
-                for (String image : notBeClassifiedImages) {
-                    mHandler.sendEmptyMessage(0x23);
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inPreferredConfig = Bitmap.Config.ARGB_4444;
-                    bitmap = BitmapFactory.decodeFile(image, options);
-//                    insertImageIntoDB(image, do_tensorflow(bitmap, classifier), mOperator, value);
-                }
-                mOperator.close();
-                mHandler.sendEmptyMessage(0x24);
-                Looper.loop();
-            }
-        }).start();
-    }
+//    private void classifyNewImages() {
+//        new Thread(new Runnable() {
+//            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
+//            @Override
+//            public void run() {
+//                Looper.prepare();
+//                // init tensorflow
+//                if (classifier == null) {
+//                    // get permission
+//                    classifier =
+//                            TensorFlowImageClassifier.create(
+//                                    getAssets(),
+//                                    MODEL_FILE,
+//                                    LABEL_FILE,
+//                                    INPUT_SIZE,
+//                                    IMAGE_MEAN,
+//                                    IMAGE_STD,
+//                                    INPUT_NAME,
+//                                    OUTPUT_NAME);
+//
+//                }
+//                Bitmap bitmap;
+//                value = new ContentValues();
+//                mOperator = new DataBaseOperator(WelcomeActivity.this, ClassifierConfig.DB_NAME, ClassifierConfig.dbversion);
+//                for (String image : notBeClassifiedImages) {
+//                    mHandler.sendEmptyMessage(0x23);
+//                    BitmapFactory.Options options = new BitmapFactory.Options();
+//                    options.inPreferredConfig = Bitmap.Config.ARGB_4444;
+//                    bitmap = BitmapFactory.decodeFile(image, options);
+////                    insertImageIntoDB(image, do_tensorflow(bitmap, classifier), mOperator, value);
+//                }
+//                mOperator.close();
+//                mHandler.sendEmptyMessage(0x24);
+//                Looper.loop();
+//            }
+//        }).start();
+//    }
 }

@@ -8,19 +8,15 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.RequiresApi;
-import android.util.Log;
 
 import org.tensorflow.photoclassifier.Classifier;
 import org.tensorflow.photoclassifier.TensorFlowImageClassifier;
-import org.tensorflow.photoclassifier.dao.DataBaseOperator;
-import org.tensorflow.photoclassifier.dao.SystemDataBaseOperator;
-import org.tensorflow.photoclassifier.config.ClassifierConfig;
+
 import org.tensorflow.photoclassifier.datasource.ImagesProvider;
-import org.tensorflow.photoclassifier.ui.activity.WelcomeActivity;
+import org.tensorflow.photoclassifier.utils.ImageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 import static org.tensorflow.photoclassifier.config.ClassifierConfig.IMAGE_MEAN;
@@ -52,6 +48,24 @@ public class WelcomeLogic extends LogicBase {
     public WelcomeLogic(Context context, Handler handler) {
         super(context, handler);
         datasource = new ImagesProvider(context);
+        initTensorflow();
+    }
+
+    private void initTensorflow() {
+        if (classifier == null) {
+            // get permission
+            classifier =
+                    TensorFlowImageClassifier.create(
+                            mContextHost.get().getAssets(),
+                            MODEL_FILE,
+                            LABEL_FILE,
+                            INPUT_SIZE,
+                            IMAGE_MEAN,
+                            IMAGE_STD,
+                            INPUT_NAME,
+                            OUTPUT_NAME);
+
+        }
     }
 
     public void collectImagesAndHandle() {
@@ -70,46 +84,37 @@ public class WelcomeLogic extends LogicBase {
         notifyUI(MSG_SCAN_IMAGE_FINISH);
     }
 
-    private void notifyUI(int msg){
-        if(mHandlerHost.get() != null){
+    private void notifyUI(int msg) {
+        if (mHandlerHost.get() != null) {
             mHandlerHost.get().sendEmptyMessage(msg);
         }
     }
 
-    public void classifyNewImages(){
+    public List<String> getNotBeClassifiedImages() {
+        return notBeClassifiedImages;
+    }
+
+    public void classifyNewImages() {
         new Thread(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
             @Override
             public void run() {
                 Looper.prepare();
-                // init tensorflow
-                if (classifier == null) {
-                    // get permission
-                    classifier =
-                            TensorFlowImageClassifier.create(
-                                    mContextHost.get().getAssets(),
-                                    MODEL_FILE,
-                                    LABEL_FILE,
-                                    INPUT_SIZE,
-                                    IMAGE_MEAN,
-                                    IMAGE_STD,
-                                    INPUT_NAME,
-                                    OUTPUT_NAME);
-
-                }
                 Bitmap bitmap;
                 value = new ContentValues();
-                datasource.insertImageIntoDb();
                 for (String image : notBeClassifiedImages) {
+                    //todo  需要开一个线程池，来批量处理这些图片，否则太慢了
                     notifyUI(MSG_CLASSIF_IMAGE_VIA_TF);
                     BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inPreferredConfig = Bitmap.Config.ARGB_4444;
+                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
                     bitmap = BitmapFactory.decodeFile(image, options);
-                    datasource.insertImageIntoDb(image, do_tensorflow(bitmap, classifier), mOperator, value);
+                    datasource.insertImageIntoDB(image, ImageUtils.do_tensorflow(bitmap, classifier), value);
                 }
                 notifyUI(MSG_PREPARE_WORK_FINISH);
                 Looper.loop();
             }
         }).start();
     }
+
+
 }
