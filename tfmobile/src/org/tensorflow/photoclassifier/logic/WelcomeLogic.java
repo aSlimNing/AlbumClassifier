@@ -10,7 +10,7 @@ import android.os.Looper;
 import android.support.annotation.RequiresApi;
 
 import org.tensorflow.photoclassifier.Classifier;
-import org.tensorflow.photoclassifier.TensorFlowImageClassifier;
+import org.tensorflow.photoclassifier.classifier.TensorFlowImageClassifier;
 
 import org.tensorflow.photoclassifier.datasource.ImagesProvider;
 import org.tensorflow.photoclassifier.utils.ImageUtils;

@@ -22,7 +22,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 
-import org.tensorflow.photoclassifier.Classifier.Recognition;
+import org.tensorflow.photoclassifier.classifier.Recognition;
 
 import java.util.List;
 

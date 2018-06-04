@@ -1,4 +1,3 @@
-/*
 package org.tensorflow.photoclassifier.ui.Fragment;
 
 import android.app.Fragment;
@@ -14,17 +13,19 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import org.tensorflow.demo.R;
+import org.tensorflow.photoclassifier.dataobject.AlbumItem;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-*/
 /**
  * 相册的fregment 的具体动作
  * 请首先阅读photos.java
  *
- * Created by me on 16-12-19.
- *//*
+  Created by me on 16-12-19.
+**/
 
 
 public class AlbumsFragment extends Fragment {
@@ -100,4 +101,3 @@ public class AlbumsFragment extends Fragment {
     }
 }
 
-*/

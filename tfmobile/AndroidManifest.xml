@@ -43,7 +43,7 @@
             android:screenOrientation="portrait">
         </activity>
 
-        <!--<activity android:name="org.tensorflow.photoclassifier.ui.activity.MainActivity" />-->
+        <activity android:name="org.tensorflow.photoclassifier.ui.activity.MainActivity" />
 
         <activity android:name="org.tensorflow.photoclassifier.ui.activity.WelcomeActivity">
             <intent-filter>

@@ -1,4 +1,3 @@
-/*
 package org.tensorflow.photoclassifier.ui.activity;
 
 import android.Manifest;
@@ -45,9 +44,9 @@ import android.widget.Toast;
 
 import org.tensorflow.demo.R;
 import org.tensorflow.photoclassifier.Classifier;
-import org.tensorflow.photoclassifier.Dao.DataBaseOperator;
-import org.tensorflow.photoclassifier.TensorFlowImageClassifier;
+import org.tensorflow.photoclassifier.classifier.TensorFlowImageClassifier;
 import org.tensorflow.photoclassifier.config.ClassifierConfig;
+import org.tensorflow.photoclassifier.logic.MainLogic;
 import org.tensorflow.photoclassifier.ui.Fragment.AlbumsFragment;
 
 import java.io.File;
@@ -57,22 +56,23 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-*/
+
 /**
  * created by dongchangzhang
- *//*
+ */
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static final int SCAN_IMAGES = 0x11;
     //UI Object
-    private TextView txt_photos;
-    private TextView txt_albums;
+    private TextView vTvPhotos;
+    private TextView vTvAlbums;
 
     //Fragment Object
-    private Contacts.Photos photos;
-    private AlbumsFragment albums;
-    private FragmentManager fManager;
-    private List<Classifier.Recognition> results;
+    private Contacts.Photos mPhotos;
+    private AlbumsFragment mAlbumFragment;
+    private FragmentManager mFragmentManager;
+    private List<Classifier.Recognition> mResults;
     private static final int PERMISSION_REQUEST_CAMERA = 300;
 
     // for camera to save image
@@ -84,25 +84,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int NOTI_CODE_CLASSIFYING = 2;
     private int NOTI_CODE_FINISHED = 3;
     private int NOTI_CODE_NEW_PHOTO = 4;
-    private NotificationManager manager;
+
+    private NotificationManager mNotificationManager;
 
     private TensorFlowImageClassifier classifier;
 
-    // actionBar
-    public static android.support.v7.app.ActionBar actionBar;
     // fragment
     private FragmentTransaction fTransaction;
     private boolean havaInAlbum = false;
 
+    //Logic
+    private MainLogic mMainLogic;
+
 
     @SuppressLint("HandlerLeak")
-    private Handler myHandler = new Handler() {
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 // scanning images
-                case 0x11:
-                    albums.onRefresh();
+                case SCAN_IMAGES:
+                    mAlbumFragment.onRefresh();
                     break;
 
             }
@@ -115,15 +117,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        actionBar = getSupportActionBar();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         // fragment
-        fManager = getFragmentManager();
+        mFragmentManager = getFragmentManager();
         bindViews();
-        txt_photos.performClick();
+        vTvPhotos.performClick();
+        prepareLogic();
+        mMainLogic.classifyImagesAtBackground();
+    }
 
-        classifyImagesAtBackground();
+    private void prepareLogic() {
+        mMainLogic = new MainLogic(this,mHandler);
     }
 
     private void sendMessages(String title, String message, int code) {
@@ -137,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBuilder.setFullScreenIntent(null, true);
         mBuilder.setAutoCancel(true);
 
-        manager.notify(code, mBuilder.build());
+        mNotificationManager.notify(code, mBuilder.build());
     }
 
     private void sendMessages(int now, int sum, int code) {
@@ -164,74 +168,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //intent.putExtra("command",1);
         Notification notification = builder.build();
         NotificationManager manger = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        manager.notify(code, notification);
+        mNotificationManager.notify(code, notification);
     }
 
     // classify images at background
     // 这里开始才真正的开始对照片进行分类，在@WelComeActivity当中，对已经分类并存入数据库的照片以及系统相册中的照片进行了扫描。
     // 存入config当中。在这里进行具体的分类，打上Tag。
     private void classifyImagesAtBackground() {
-        if (ClassifierConfig.needToBeClassified == null) {
-            // do nothing
-            Log.d("Main-TF", "null");
-        } else if (ClassifierConfig.needToBeClassified.size() == 0) {
-            // do nothing
-            Log.d("Main-TF", "0");
-        } else {
-            new Thread(new Runnable() {
-                @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-                @Override
-                public void run() {
-                    Looper.prepare();
-                    Bitmap bitmap;
-                    // init tensorflow
-                    if (classifier == null) {
-                        // get permission
-                        classifier = new TensorFlowImageClassifier();
-                        try {
-                            classifier.initializeTensorFlow(
-                                    getAssets(), ClassifierConfig.MODEL_FILE, ClassifierConfig.LABEL_FILE,
-                                    ClassifierConfig.NUM_CLASSES, ClassifierConfig.INPUT_SIZE, ClassifierConfig.IMAGE_MEAN,
-                                    ClassifierConfig.IMAGE_STD, ClassifierConfig.INPUT_NAME, ClassifierConfig.OUTPUT_NAME);
-                        } catch (final IOException e) {
 
-                        }
-                    }
-                    ContentValues value = new ContentValues();
-                    DataBaseOperator myoperator = new DataBaseOperator(MainActivity.this,
-                            ClassifierConfig.DB_NAME, ClassifierConfig.dbversion);
-                    int now = 1;
-                    sendMessages("正在为您处理" + ClassifierConfig.needToBeClassified.size()
-                            + "张新的图片", "您可以到通知中心查看处理进度", NOTI_CODE_HAVE_NEW);
-                    for (String image : ClassifierConfig.needToBeClassified) {
-                        Log.d("classifyImages", image);
-
-
-                        sendMessages(now++, ClassifierConfig.needToBeClassified.size(), NOTI_CODE_CLASSIFYING);
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        options.inPreferredConfig = Bitmap.Config.ARGB_4444;
-                        bitmap = BitmapFactory.decodeFile(image, options);
-                        insertImageIntoDB(image, do_tensorflow(bitmap, classifier), myoperator, value);
-                        if (havaInAlbum) {
-                            myHandler.sendEmptyMessage(0x11);
-                        }
-
-                    }
-                    ClassifierConfig.needToBeClassified = null;
-                    myoperator.close();
-                    Looper.loop();
-                }
-            }).start();
-        }
     }
 
-    */
-/**
+
+    /**
      * ActionBar
      *
      * @param menu
      * @return
-     *//*
+     */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -242,13 +195,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onCreateOptionsMenu(menu);
     }
 
-    */
-/**
+
+    /**
      * 监听菜单栏目的动作，当按下不同的按钮执行相应的动作
      *
      * @param item
      * @return
-     *//*
+     */
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -256,8 +209,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // 返回
                 System.out.println("title");
                 getFragmentManager().popBackStack();
-                actionBar.setDisplayHomeAsUpEnabled(false);
-                actionBar.setTitle(" 相册");
                 break;
 //            case R.id.action_search:
 //                // 搜索
@@ -291,14 +242,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    */
-/**
+    /**
      * do it after require permission
      *
      * @param requestCode
      * @param permissions
      * @param grantResults
-     *//*
+     */
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -306,13 +256,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         doNext(requestCode, grantResults);
     }
 
-    */
-/**
+
+    /**
      * if have permission will do this, or show a toast
      *
      * @param requestCode
      * @param grantResults
-     *//*
+     */
 
     private void doNext(int requestCode, int[] grantResults) {
         if (requestCode == PERMISSION_REQUEST_CAMERA) {
@@ -326,10 +276,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    */
 /**
      * 打开相机获取图片
-     *//*
+     */
 
     private void startCamera() {
         File imagePath = new File(Environment.getExternalStorageDirectory(), "tmp");
@@ -410,13 +359,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         matrix.postScale(scaleWidth, scaleHeight);
         Bitmap newbm = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
         // get classifier information
-        results = classifier.recognizeImage(newbm);
-        for (final Classifier.Recognition result : results) {
+        mResults = classifier.recognizeImage(newbm);
+        for (final classifier.Recognition result : mResults) {
             System.out.println("Result: " + result.getTitle());
         }
         // call function to save image
         String url = saveImage("", bitmap);
-        Log.d("Detected = ", String.valueOf(results));
+        Log.d("Detected = ", String.valueOf(mResults));
         // update db
         ClassifierConfig.dbHelper = new MyDatabaseHelper(this, "Album.db", null, ClassifierConfig.dbversion);
         SQLiteDatabase db = ClassifierConfig.dbHelper.getWritableDatabase();
@@ -424,7 +373,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ContentValues values = new ContentValues();
         String album_type;
         Cursor cursor_album = null;
-        for (Classifier.Recognition cr : results) {
+        for (classifier.Recognition cr : mResults) {
             int i;
             for (i = 0; i < ClassifierConfig.tf_type_times; ++i) {
                 if (ClassifierConfig.tf_type_name[i].equals(cr.getTitle())) {
@@ -447,7 +396,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         db.close();
 
-        sendMessages("新的图片", String.valueOf(results), NOTI_CODE_NEW_PHOTO);
+        sendMessages("新的图片", String.valueOf(mResults), NOTI_CODE_NEW_PHOTO);
 
     }
 
@@ -479,7 +428,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 b.close();
                 // reflash the fragment of Photos
                 ClassifierConfig.workdone = false;
-                photos.refresh(fileName);
+                mPhotos.refresh(fileName);
                 ClassifierConfig.workdone = false;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -499,37 +448,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //UI组件初始化与事件绑定
     private void bindViews() {
         // 定位textview
-        txt_photos = (TextView) findViewById(R.id.all_photos);
-        txt_albums = (TextView) findViewById(R.id.all_albums);
+        vTvPhotos = (TextView) findViewById(R.id.all_photos);
+        vTvAlbums = (TextView) findViewById(R.id.all_albums);
         // 对其设置监听动作
-        txt_photos.setOnClickListener(this);
-        txt_albums.setOnClickListener(this);
+        vTvPhotos.setOnClickListener(this);
+        vTvAlbums.setOnClickListener(this);
     }
 
     //重置所有文本的选中状态为未点击状态
     private void setSelected() {
-        txt_photos.setSelected(false);
-        txt_albums.setSelected(false);
+        vTvPhotos.setSelected(false);
+        vTvAlbums.setSelected(false);
     }
 
     //隐藏所有Fragment
     private void hideAllFragment(FragmentTransaction fragmentTransaction) {
-        if (photos != null) fragmentTransaction.hide(photos);
-        if (albums != null) fragmentTransaction.hide(albums);
+        if (mPhotos != null) fragmentTransaction.hide(mPhotos);
+        if (mAlbumFragment != null) fragmentTransaction.hide(mAlbumFragment);
     }
 
-    */
+
 /**
      * 监听textview的按钮事件
      *
      * @param v
-     *//*
+     */
 
 
     @Override
     public void onClick(View v) {
 
-        fTransaction = fManager.beginTransaction();
+        fTransaction = mFragmentManager.beginTransaction();
         hideAllFragment(fTransaction);
         switch (v.getId()) {
             // 照片
@@ -539,15 +488,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 actionBar.setDisplayHomeAsUpEnabled(false);
                 actionBar.setTitle("照片");
                 setSelected();
-                txt_photos.setSelected(true);
+                vTvPhotos.setSelected(true);
                 // 暂时使用弹出堆栈，以避免从相簿进入相册无法返回
                 // 可以使用其他方法，这个方法不好，下面相同
                 getFragmentManager().popBackStack();
-                if (photos == null) {
-                    photos = new Photos();
-                    fTransaction.add(R.id.ly_content, photos);
+                if (mPhotos == null) {
+                    mPhotos = new Photos();
+                    fTransaction.add(R.id.ly_content, mPhotos);
                 } else {
-                    fTransaction.show(photos);
+                    fTransaction.show(mPhotos);
                 }
 
                 break;
@@ -555,19 +504,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // 相册
             case R.id.all_albums:
 
-                // same as photos
+                // same as mPhotos
                 actionBar.setDisplayHomeAsUpEnabled(false);
                 actionBar.setTitle("相册");
 
                 setSelected();
-                txt_albums.setSelected(true);
+                vTvAlbums.setSelected(true);
                 getFragmentManager().popBackStack();
-                if (albums == null) {
-                    albums = new Albums();
-                    fTransaction.add(R.id.ly_content, albums);
+                if (mAlbumFragment == null) {
+                    mAlbumFragment = new Albums();
+                    fTransaction.add(R.id.ly_content, mAlbumFragment);
                 } else {
-                    albums.onRefresh();
-                    fTransaction.show(albums);
+                    mAlbumFragment.onRefresh();
+                    fTransaction.show(mAlbumFragment);
                 }
                 havaInAlbum = true;
                 break;
@@ -575,4 +524,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fTransaction.commit();
     }
 }
-*/
+

@@ -15,7 +15,7 @@ limitations under the License.
 
 package org.tensorflow.photoclassifier;
 
-import org.tensorflow.photoclassifier.Classifier.Recognition;
+import org.tensorflow.photoclassifier.classifier.Recognition;
 
 import java.util.List;
 
