@@ -1,5 +1,6 @@
 package org.tensorflow.photoclassifier.ui.Fragment;
 
+
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;

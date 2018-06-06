@@ -248,7 +248,7 @@ public class ImageUtils {
 
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-    public static List<classifier.Recognition>
+    public static List<Classifier.Recognition>
     do_tensorflow(Bitmap bitmap, Classifier classifier) {
         // resize image
         Bitmap newbm = ImageUtils.dealImageForTF(bitmap);

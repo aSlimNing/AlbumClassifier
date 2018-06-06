@@ -10,6 +10,7 @@ import android.os.Looper;
 import android.support.annotation.RequiresApi;
 
 import org.tensorflow.photoclassifier.Classifier;
+import org.tensorflow.photoclassifier.classifier.TFClassifierInstance;
 import org.tensorflow.photoclassifier.classifier.TensorFlowImageClassifier;
 
 import org.tensorflow.photoclassifier.datasource.ImagesProvider;
@@ -108,7 +109,7 @@ public class WelcomeLogic extends LogicBase {
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inPreferredConfig = Bitmap.Config.ARGB_8888;
                     bitmap = BitmapFactory.decodeFile(image, options);
-                    datasource.insertImageIntoDB(image, ImageUtils.do_tensorflow(bitmap, classifier), value);
+                    datasource.insertImageIntoDB(image, TFClassifierInstance.getInstance().recongizeImage(bitmap), value);
                 }
                 notifyUI(MSG_PREPARE_WORK_FINISH);
                 Looper.loop();
@@ -116,5 +117,9 @@ public class WelcomeLogic extends LogicBase {
         }).start();
     }
 
-
+    @Override
+    public void release() {
+        super.release();
+        datasource.release();
+    }
 }

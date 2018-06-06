@@ -4,7 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 
 import org.tensorflow.photoclassifier.Classifier;
-import org.tensorflow.photoclassifier.config.ClassifierConfig;
+
+import java.util.List;
 
 import static org.tensorflow.photoclassifier.config.ClassifierConfig.IMAGE_MEAN;
 import static org.tensorflow.photoclassifier.config.ClassifierConfig.IMAGE_STD;
@@ -45,11 +46,12 @@ public class TFClassifierInstance {
                 OUTPUT_NAME);
     }
 
-    public void recongizeImage(Bitmap bitmap){
+    public List<Classifier.Recognition> recongizeImage(Bitmap bitmap){
         if(mTensorFlowImageClassifier != null){
-            mTensorFlowImageClassifier.recognizeImage(bitmap);
+            return mTensorFlowImageClassifier.recognizeImage(bitmap);
         }else {
             //do nothing
         }
+        return null;
     }
 }

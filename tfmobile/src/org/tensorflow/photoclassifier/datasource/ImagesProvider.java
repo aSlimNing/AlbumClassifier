@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
 
+import org.tensorflow.photoclassifier.Classifier;
 import org.tensorflow.photoclassifier.config.ClassifierConfig;
 import org.tensorflow.photoclassifier.dao.DataBaseOperator;
 import org.tensorflow.photoclassifier.dao.SystemDataBaseOperator;
@@ -80,13 +81,13 @@ public class ImagesProvider {
         }
     }
 
-    public void insertImageIntoDB(String image, List<classifier.Recognition> results, ContentValues value) {
+    public void insertImageIntoDB(String image, List<Classifier.Recognition> results, ContentValues value) {
         if (results == null) return;
         List<Map> findResult;
         if (mOperator == null) {
             mOperator = new DataBaseOperator(mContext, ClassifierConfig.DB_NAME, ClassifierConfig.dbversion);
         }
-        for (classifier.Recognition cr : results) {
+        for (Classifier.Recognition cr : results) {
             String type = cr.getTitle();
             // AlbumPhotos
             value.clear();

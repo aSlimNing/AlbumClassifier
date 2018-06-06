@@ -30,6 +30,7 @@
         android:targetSdkVersion="25" />
 
     <application
+        android:name="org.tensorflow.photoclassifier.app.InitialApplication"
         android:allowBackup="true"
         android:debuggable="true"
         android:icon="@drawable/ic_launcher"
