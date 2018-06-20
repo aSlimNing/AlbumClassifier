@@ -30,6 +30,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, name, factory, version);
         mContext = context;
     }
+
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         try {
