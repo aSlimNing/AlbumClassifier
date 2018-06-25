@@ -1,4 +1,4 @@
-package org.tensorflow.photoclassifier.ui.Fragment;
+package org.tensorflow.photoclassifier.ui.fragment;
 
 
 import android.app.Fragment;
@@ -16,10 +16,14 @@ import android.widget.GridView;
 
 import org.tensorflow.demo.R;
 import org.tensorflow.photoclassifier.dataobject.AlbumItem;
+import org.tensorflow.photoclassifier.ui.activity.MainActivity;
+import org.tensorflow.photoclassifier.ui.adapter.AlbumAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static org.tensorflow.photoclassifier.utils.ImageUtils.getAlbumInfo;
 
 /**
  * 相册的fregment 的具体动作
@@ -49,7 +53,7 @@ public class AlbumsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fg_albums,container,false);
         initAlbums();
-        GridView listView = (GridView) view.findViewById(com.hzzhuangning.photoclassifier.R.id.album_list);
+        GridView listView = (GridView) view.findViewById(R.id.album_list);
         manager = getFragmentManager();
         adapter = new AlbumAdapter(getActivity(), R.layout.album_item, albumList);
         listView.setAdapter(adapter);
@@ -63,17 +67,10 @@ public class AlbumsFragment extends Fragment {
 
                 String type = result.get(position).get("album_name");
                 Log.d("Album_Name", type);
-                Photos myJDEditFragment = new Photos(type);
+                PhotoFragment myJDEditFragment = new PhotoFragment(type);
                 ft = manager.beginTransaction();
                 ft.add(R.id.ly_content , myJDEditFragment);
                 ft.setTransition(FragmentTransaction. TRANSIT_FRAGMENT_OPEN);
-                try {
-                    android.support.v7.app.ActionBar actionBar = MainActivity.actionBar;
-                    actionBar.setDisplayHomeAsUpEnabled(true);
-                    actionBar.setTitle("");
-                } catch (Exception e) {
-                    ;
-                }
                 ft.addToBackStack( null);
                 ft.commit();
             }

@@ -15,12 +15,19 @@
  */
 package org.tensorflow.photoclassifier.utils;
 
+import android.content.ContentResolver;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.media.Image;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
@@ -28,11 +35,15 @@ import junit.framework.Assert;
 
 import org.tensorflow.photoclassifier.Classifier;
 import org.tensorflow.photoclassifier.config.ClassifierConfig;
+import org.tensorflow.photoclassifier.dao.DatabaseHelper;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.tensorflow.photoclassifier.config.ClassifierConfig.INPUT_SIZE;
 
@@ -279,4 +290,97 @@ public class ImageUtils {
         }
     }
 
+    public static List<Map<String, String>> getAlbumInfo(Context ctx) {
+        List<Map<String, String>> result = new ArrayList<>();
+        DatabaseHelper dbHelper = new DatabaseHelper(ctx, "Album.db", null, ClassifierConfig.dbversion);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = null;
+        cursor = db.query("Album", null, null, null, null, null, null);
+        if (cursor.moveToFirst()) {
+            Map<String, String> tmp;
+            do {
+                tmp = new HashMap<>();;
+                String album_name = cursor.getString(cursor.getColumnIndex("album_name"));
+                String url = cursor.getString(cursor.getColumnIndex("show_image"));
+                tmp.put("album_name", album_name);
+                tmp.put("show_image", url);
+                result.add(tmp);
+                Log.d("ITEM", String.valueOf(tmp));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        Log.d("Album info", "END");
+        return result;
+    }
+
+    public static List<Map> getAlbumPhotos(Context ctx, String name) {
+        List<Map> result = new ArrayList<>();
+        DatabaseHelper dbHelper = new DatabaseHelper(ctx, "Album.db", null, ClassifierConfig.dbversion);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = null;
+        cursor = db.query("AlbumPhotos", null, "album_name = '" + name + "'", null, null, null, null);
+        if (cursor.moveToFirst()) {
+            Map<String, String> tmp;
+            do {
+                tmp = new HashMap<>();
+                String album_name = cursor.getString(cursor.getColumnIndex("album_name"));
+                String url = cursor.getString(cursor.getColumnIndex("url"));
+                tmp.put("album_name", album_name);
+                tmp.put("url", url);
+                tmp.put("_data", url);
+                result.add(tmp);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return result;
+    }
+
+    public static void updateGallery(Context con, String filename)
+    {
+        MediaScannerConnection.scanFile(con,
+                new String[] { filename }, null,
+                new MediaScannerConnection.OnScanCompletedListener() {
+                    public void onScanCompleted(String path, Uri uri) {
+                        Log.i("ExternalStorage", "Scanned " + path + ":");
+                        Log.i("ExternalStorage", "-> uri=" + uri);
+                        ClassifierConfig.workdone = true;
+                    }
+                });
+    }
+
+    public static List<Map> getMediaImageInfo(Context ctx) {
+        //可以手动指定获取的列
+        String[] columns = new String[]{
+                MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID, MediaStore.Images.Media.BUCKET_ID, MediaStore.Images.Media.TITLE, MediaStore.Images.Media.DISPLAY_NAME
+                , MediaStore.Images.Media.LATITUDE, MediaStore.Images.Media.LONGITUDE, MediaStore.Images.Media.DATE_TAKEN};
+
+        ContentResolver contentResolver = ctx.getContentResolver();
+        //外部存储的SD卡的访问Uri
+        Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        //  MediaStore.Images.Media.INTERNAL_CONTENT_URI
+        Cursor cursor = contentResolver.query(uri, null, null, null, null);//获取全部列
+        //  Cursor cursor = contentResolver.query(uri, columns, null, null, null);//获取指定列
+        if (cursor != null) {
+            Map<String, String> item = null;
+            List<Map> result = new ArrayList<>();
+            while (cursor.moveToNext()) {
+                String[] columnNames = cursor.getColumnNames();
+                item = new HashMap<>();
+                for (String colnmnName : columnNames) {
+                    int columnIndex = cursor.getColumnIndex(colnmnName);
+                    String columnValue = cursor.getString(columnIndex);
+                    item.put(colnmnName, columnValue);
+                }
+                result.add(item);
+            }
+            Log.d("debug", "getMediaImageInfo() size=" + result.size() + ", result=" + result);
+            cursor.close();
+            return result;
+        }
+        cursor.close();
+        return null;
+    }
 }
