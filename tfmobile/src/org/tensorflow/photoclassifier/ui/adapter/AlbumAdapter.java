@@ -11,9 +11,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import com.bumptech.glide.Glide;
-import com.hzzhuangning.photoclassifier.R;
-import com.hzzhuangning.photoclassifier.entity.AlbumItem;
-import com.hzzhuangning.photoclassifier.view.GlideRoundTransform;
 
 import org.tensorflow.demo.R;
 import org.tensorflow.photoclassifier.dataobject.AlbumItem;

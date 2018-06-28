@@ -3,7 +3,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.hzzhuangning.photoclassifier.view.SquareLayout
+    <org.tensorflow.photoclassifier.box.SquareLayout
         android:id="@+id/layout_icon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
@@ -13,7 +13,7 @@
             android:layout_height="match_parent"
             android:scaleType="fitXY"
             />
-    </com.hzzhuangning.photoclassifier.view.SquareLayout>
+    </org.tensorflow.photoclassifier.box.SquareLayout>
     <TextView
         android:id="@+id/album_name"
         android:layout_width="wrap_content"

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
@@ -267,16 +268,16 @@ public class WelcomeActivity extends AppCompatActivity {
         vProgressBar.setVisibility(View.GONE);
         vWorkProcess.setText("尽情享受吧");
         //setAppName();
-//        final Intent it = new Intent(getApplication(), MainActivity.class); //你要转向的Activity
-//        Timer timer = new Timer();
-//        TimerTask task = new TimerTask() {
-//            @Override
-//            public void run() {
-//                startActivity(it);
-//                WelcomeActivity.this.finish();
-//            }
-//        };
-//        timer.schedule(task, 1000 * 2);
+        final Intent it = new Intent(getApplication(), MainActivity.class); //你要转向的Activity
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                startActivity(it);
+                WelcomeActivity.this.finish();
+            }
+        };
+        timer.schedule(task, 1000 * 2);
     }
 
     private void setAppName() {

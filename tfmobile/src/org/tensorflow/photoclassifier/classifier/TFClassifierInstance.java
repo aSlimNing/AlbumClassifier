@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 
 import org.tensorflow.photoclassifier.Classifier;
+import org.tensorflow.photoclassifier.utils.ImageUtils;
 
 import java.util.List;
 
@@ -48,10 +49,30 @@ public class TFClassifierInstance {
 
     public List<Classifier.Recognition> recongizeImage(Bitmap bitmap){
         if(mTensorFlowImageClassifier != null){
-            return mTensorFlowImageClassifier.recognizeImage(bitmap);
+            Bitmap newbm = ImageUtils.dealImageForTF(bitmap);
+            bitmap.recycle();
+            try{
+                return mTensorFlowImageClassifier.recognizeImage(newbm);
+            }catch (Exception e){
+
+            }
         }else {
             //do nothing
         }
         return null;
+    }
+
+    public String getStatString(){
+        if(mInstance !=null){
+            return mInstance.getStatString();
+        }else {
+            return "";
+        }
+    }
+
+    public void enableStatLogging(boolean debug){
+        if(mInstance !=null){
+            mInstance.enableStatLogging(debug);
+        }
     }
 }

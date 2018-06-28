@@ -15,10 +15,8 @@ limitations under the License.
 
 package org.tensorflow.photoclassifier;
 
-import org.tensorflow.photoclassifier.classifier.Recognition;
-
 import java.util.List;
 
 public interface ResultsView {
-  public void setResults(final List<Recognition> results);
+  public void setResults(final List<Classifier.Recognition> results);
 }

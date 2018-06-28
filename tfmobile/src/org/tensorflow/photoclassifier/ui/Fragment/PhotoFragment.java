@@ -18,6 +18,7 @@ import org.tensorflow.demo.R;
 import org.tensorflow.photoclassifier.config.ClassifierConfig;
 import org.tensorflow.photoclassifier.dataobject.PhotoItem;
 import org.tensorflow.photoclassifier.ui.activity.MainActivity;
+import org.tensorflow.photoclassifier.ui.activity.PhotoDetailActivity;
 import org.tensorflow.photoclassifier.ui.adapter.PhotoAdapter;
 
 import java.util.ArrayList;

@@ -35,6 +35,9 @@ import java.util.Vector;
 
 import org.tensorflow.demo.R;
 import org.tensorflow.photoclassifier.OverlayView.DrawCallback;
+import org.tensorflow.photoclassifier.classifier.TFClassifierInstance;
+import org.tensorflow.photoclassifier.classifier.TensorFlowImageClassifier;
+import org.tensorflow.photoclassifier.scope.ClassifierScopeImpl;
 import org.tensorflow.photoclassifier.utils.BorderedText;
 import org.tensorflow.photoclassifier.utils.ImageUtils;
 import org.tensorflow.photoclassifier.utils.Logger;
@@ -81,8 +84,6 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
 
   private static final Size DESIRED_PREVIEW_SIZE = new Size(640, 480);
 
-  private Classifier classifier;
-
   private Integer sensorOrientation;
 
   private int previewWidth = 0;
@@ -125,16 +126,7 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
     borderedText = new BorderedText(textSizePx);
     borderedText.setTypeface(Typeface.MONOSPACE);
 
-    classifier =
-        Classifier.TensorFlowImageClassifier.create(
-            getAssets(),
-            MODEL_FILE,
-            LABEL_FILE,
-            INPUT_SIZE,
-            IMAGE_MEAN,
-            IMAGE_STD,
-            INPUT_NAME,
-            OUTPUT_NAME);
+    TFClassifierInstance.getInstance();
 
     resultsView = (ResultsView) findViewById(R.id.results);
     previewWidth = size.getWidth();
@@ -232,7 +224,7 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
           @Override
           public void run() {
             final long startTime = SystemClock.uptimeMillis();
-            final List<classifier.Recognition> results = classifier.recognizeImage(croppedBitmap);
+            final List<Classifier.Recognition> results = TFClassifierInstance.getInstance().recongizeImage(croppedBitmap);
             lastProcessingTimeMs = SystemClock.uptimeMillis() - startTime;
 
             cropCopyBitmap = Bitmap.createBitmap(croppedBitmap);
@@ -247,7 +239,7 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
 
   @Override
   public void onSetDebug(boolean debug) {
-    classifier.enableStatLogging(debug);
+    TFClassifierInstance.getInstance().enableStatLogging(debug);
   }
 
   private void renderDebug(final Canvas canvas) {
@@ -265,13 +257,11 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
       canvas.drawBitmap(copy, matrix, new Paint());
 
       final Vector<String> lines = new Vector<String>();
-      if (classifier != null) {
-        String statString = classifier.getStatString();
+        String statString = TFClassifierInstance.getInstance().getStatString();
         String[] statLines = statString.split("\n");
         for (String line : statLines) {
           lines.add(line);
         }
-      }
 
       lines.add("Frame: " + previewWidth + "x" + previewHeight);
       lines.add("Crop: " + copy.getWidth() + "x" + copy.getHeight());
